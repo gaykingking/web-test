@@ -1,0 +1,74 @@
+<html>
+<meta name="keywords"content="pdf转word">
+<head>
+
+<style>
+h1{
+text-align:center;
+}
+#d1{
+text-align:center;
+}
+</style>
+</head>
+<body>
+<div><h1>pdf转word</h1></div>
+<div id="d1"><input type="file" id="file1" onchange="upload(this.files)" multiple="multiple"/></div>
+<script src="/js/jquery-3.6.1.min.js"></script>
+<script type="text/javascript">
+// 文件流转blob对象下载
+function download(files,fileName) {
+    let blob = new Blob([files], {type: 'multipart/form-data'});
+    // 获取heads中的filename文件名
+    let downloadElement = document.createElement('a');
+    // 创建下载的链接
+    let href = window.URL.createObjectURL(blob);
+    downloadElement.href = href;
+    // 下载后文件名
+    downloadElement.download = fileName;
+    document.body.appendChild(downloadElement);
+    // 点击下载
+    downloadElement.click();
+    // 下载完成移除元素
+    document.body.removeChild(downloadElement);
+    // 释放掉blob对象
+    window.URL.revokeObjectURL(href);
+}
+
+// 上传
+function upload(files,fileName) {
+	var formData = new FormData();
+	formData.append("file", files[0]);	
+	var xhr = new XMLHttpRequest();
+	xhr.open('POST', "http://www.pdf-transform-word.com/flie/uploads", true);
+	//xhr.setRequestHeader('Content-type', 'multipart/form-data');
+    xhr.responseType = 'blob';
+    xhr.onload = function(){
+        var res = xhr.response;
+		
+		var headers = xhr.getAllResponseHeaders();
+
+    // Convert the header string into an array
+    // of individual headers
+    var arr = headers.trim().split(/[\r\n]+/);
+
+    // Create a map of header names to values
+    var headerMap = {};
+    arr.forEach(function (line) {
+      var parts = line.split(': ');
+      var header = parts.shift();
+      var value = parts.join(': ');
+      headerMap[header] = value;
+    });
+		
+		
+	let fileName=headerMap["content-disposition"];
+	fileName=fileName.split("=")[1].replace(/;filename\*/i,"");
+	fileName=decodeURI(fileName);
+	download(res,fileName);
+    }
+    xhr.send(formData);
+}
+</script>
+</body>
+</html>

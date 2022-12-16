@@ -1,0 +1,22 @@
+server:
+  port: 8082
+spring:
+  datasource:
+    driver-class: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://139.198.187.152:3306/INVESTOR?useUnicode=true&characterEncoding=UTF-8&useSSL=false
+    username: root
+    password: LINGsheng1026*
+  application:
+    name: web-test
+  cloud:
+    nacos:
+      discovery:
+        server-addr: 139.198.187.152:8848
+        group: DEFAULT_GROUP
+  servlet:
+    multipart:
+      max-file-size: 1024MB
+      max-request-size: 1024MB
+feign:
+  httpclient:
+    enabled: true
