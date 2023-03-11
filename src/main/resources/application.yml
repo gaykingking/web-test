@@ -3,15 +3,31 @@ server:
 spring:
   datasource:
     driver-class: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://139.198.187.152:3306/INVESTOR?useUnicode=true&characterEncoding=UTF-8&useSSL=false
+    url: jdbc:mysql://127.0.0.1:3306/pdf_transform_word?serverTimezone=UTC&useUnicode=true&characterEncoding=UTF-8&useSSL=false
     username: root
-    password: LINGsheng1026*
+    password: root
+    initialSize: 5
+    minIdle: 10
+    maxActive: 1000
+    #配置获取连接等待超时的时间
+    maxWait: 600000000
+    #配置间隔多久才进行一次检测，检测需要关闭的空闲连接，单位是毫秒
+    timeBetweenEvictionRunsMillis: 60000
+    #配置一个连接在池中最小生存的时间，单位是毫秒
+    minEvictableIdleTimeMillis: 300000
+    validationQuery: SELECT 1
+    #指明连接是否被空闲连接回收器(如果有)进行检验.如果检测失败,则连接将被从池中去除.
+    testWhileIdle: true
+    #指明是否在从池中取出连接前进行检验,如果检验失败,则从池中去除连接并尝试取出另一个
+    testOnBorrow: true
+    #指明是否在归还到池中前进行检验
+    testOnReturn: false
   application:
     name: web-test
   cloud:
     nacos:
       discovery:
-        server-addr: 139.198.187.152:8848
+        server-addr: 49.235.123.253:8848
         group: DEFAULT_GROUP
   servlet:
     multipart:
